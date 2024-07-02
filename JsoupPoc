@@ -30,3 +30,13 @@ For (Element product element:productElements) {
 // Set variables to jmeter variables for further use in test plan
 vars.put("productIds", productIds.join(","))
 vars.put("productNames", productNames.join(","))
+
+for (i=0; i<=productIds,size(); i++) {
+  String productId = productIds[i]
+  String productName = productNames[i]
+
+if (productName.contains("Labrador")){
+  prev.setSuccessful(false)
+  prev.setResponseMessage("Labrador product found")
+}
+}
