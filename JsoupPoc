@@ -4,6 +4,9 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import org.apache.jmeter.services.FileServer
+import org.apache.common.io.FileUtils
+
 String htmlResponse = prev.getResponseDataAsString();
 
 // Parse the html using jsoup
@@ -31,12 +34,26 @@ For (Element product element:productElements) {
 vars.put("productIds", productIds.join(","))
 vars.put("productNames", productNames.join(","))
 
-for (i=0; i<=productIds,size(); i++) {
-  String productId = productIds[i]
-  String productName = productNames[i]
+// Add assertions without using the assertion in jmeter
+//for (i=0; i<=productIds,size(); i++) {
+//  String productId = productIds[i]
+//  String productName = productNames[i]
 
-if (productName.contains("Labrador")){
-  prev.setSuccessful(false)
-  prev.setResponseMessage("Labrador product found")
-}
+//if (productName.contains("Labrador")){
+//  prev.setSuccessful(false)
+//  prev.setResponseMessage("Labrador product found")
+//}
+//}
+
+String productIdsFromVars = vars.get("productIds")
+String productNamesFromVars = vars.get("productNames")
+
+String csvFilePath = "C:\\filepath\\filename"
+
+String csvContent = "Product Id, Product Name\n" + productIdsFromVars + "," + productNamesFromVars + "\n"
+
+try {
+  FileUtils.writeStringToFile(new File(csvFilePath), csvContent, "UTF-8", false)
+} catch (Exception ex) {
+  log.error("Error exporting content to file" + ex.getMessage())
 }
